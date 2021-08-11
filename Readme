@@ -1,0 +1,208 @@
+
+8/11/21
+
+This Python script takes data from two replicate Ribo-RET experiments and infers the position of ORFs. It also creates output files, including graphs for publication-ready figures. Required input files are listed below, with example files included (these files are available on GitHub). 
+
+The script runs in Python v3 and requires that the following modules are installed:
+matplotlib.pyplot
+numpy as np
+pandas
+seaborn
+datetime
+pathlib
+subprocess
+os
+math
+random
+scipy
+
+
+The user is prompted to provide file paths for input and output files, and filenames for input files. Output files are written to a folder with the date and time included in the folder name.
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of required input files, with names of example files
+
+1. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of Ribo-RET data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+2. .gff listing sequence read coverage genome-wide on both strands for replicate 2 of Ribo-RET data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+3. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of Ribo-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+4. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of Ribo-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+5. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+6. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+7. .fna with one line of header and a single line of genome sequence (no gaps or line breaks)
+Example file: H37Rv.fna
+
+8. .gff listing all ORFs from the existing genome annotation. Must be at least 6 columns, with column 3 [counting starts at column 0] listing the left-end coordinate, column 4 listing the right-end coordinate, and column 6 listing the strand.
+Example file: H37Rv_annotated_ORFs.gff
+
+9. .txt listing transcription start sites and associated information. Column 0 = strand, column 1 = coordinate, column 2 = sequence of first 10 nt of transcribed region, column 3 = distance to nearest downstream RTG if that distance is <8 nt ("N/A" is listed otherwise), column 4 = coordinate of associated start codon, column 5 = coordinate of associated stop codon, column 6 = nucleotide sequence of assocaited ORF, column 7 = amino acid sequence of associated protein, column 8 = ORF classification (annotated/novel/isoform)
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of output files (filenames contain date or time, shown here as #date# and #time#, respectively):
+
+
+******************************************************************************************************
+Filenames
+Annotated_MFE_deltaG_scores.txt
+Novel_MFE_deltaG_scores.txt
+Isoform_MFE_deltaG_scores.txt
+Random_MFE_deltaG_scores.txt
+
+Description
+Single column text-files listing delta G scores for predicted minimum free energy RNA structure in the regions around annotated/novel/isoform ORF start codons (-40 to +20 nt) and random sequences
+
+******************************************************************************************************
+Filenames
+Annotated_RBS_sequences_#date#.txt
+Novel_RBS_sequences_#date#.txt
+Isoform_RBS_sequences_#date#.txt
+random_RBS_sequences_#date#.txt
+
+Description
+.fasta format files listing sequences used to predicted minimum free energy RNA structure in the regions around annotated/novel/isoform ORF start codons (-40 to +20 nt) and random sequences
+
+******************************************************************************************************Filename
+Filename
+Annotated_Novel_Isoform_MFE_scores#date#.png
+
+Description
+Strip plot of delta G scores for predicted minimum free energy RNA structures around start codons of annotated/novel/isoform ORF start codons (-40 to +20 nt) and random sequences
+******************************************************************************************************
+
+Filenames
+Annotated_Novel_Isoform_ret_peak_height_stripplot_rep1#date#.png
+Annotated_Novel_Isoform_ret_peak_height_stripplot_rep2#date#.png
+
+Description
+Strip plot of sequence read coverage (RPM) of Ribo-RET data at start codons of annotated/novel/isoform ORFs
+******************************************************************************************************
+
+Filenames
+Annotated_ORFs_#date#.txt
+Novel_ORFs_#date#.txt
+Isoform_ORFs_#date#.txt
+
+Description
+.txt lists of annotated/novel/isoform ORFs identified from IERFs
+Files list the following:
+Ribo-RET gff filenames used for analysis
+Threshold, span, window, and Min_fold values
+Tab-delimited lists of ORFs showing: Strand, Start Codon sequence, Start Codon to IERF Spacing, Start Coordinate position, Ribo-RET RPM coverage (rep1), Ribo-RET RPM coverage (rep2), Stop Codon sequence, Stop codon coordinate,	ORF Sequence, Protein Sequence
+******************************************************************************************************
+
+Filenames
+annotated_ORF_starts_codon_frequency#date#.txt
+novel_ORF_starts_codon_frequency#date#.txt
+isoform_ORF_starts_codon_frequency#date#.txt
+
+Description
+Tab-delimited .txt showing the frequency of all trinucleotide sequences at positions from -50 to +8 relative to start codons for annotated/novel/isoform ORFs
+******************************************************************************************************
+
+Filenames
+annotated_starts_#date#.png
+novel_starts_#date#.png
+isoform_starts_#date#.png
+annotated_stops_#date#.png
+novel_stops_#date#.png
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around start/stop codons of annotated/novel/isoform ORFs identified from Ribo-RET data
+******************************************************************************************************
+
+Filenames
+leaderless_0_nt_annotated_starts_ret_2reps_#date#.png
+leaderless_0_nt_annotated_stops_ret_2reps_#date#.png
+leaderless_0_nt_isoform_starts_ret_2reps_#date#.png
+leaderless_0_nt_isoform_stops_ret_2reps_#date#.png
+leaderless_0_nt_novel_starts_ret_2reps_#date#.png
+leaderless_0_nt_novel_stops_ret_2reps_#date#.png
+
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around start/stop codons of annotated/novel/isoform leaderless ORFs. Leaderless ORFs are defined as having an RTG codon that aligns perfectly with a transcription start site from Shell et al. (2015) or Cortes et al. (2013)
+******************************************************************************************************
+
+Filenames
+RNA_annotated_starts_#date#.png
+RNA_annotated_stops_#date#.png
+RNA_isoform_starts_#date#.png
+RNA_novel_starts_#date#.png
+RNA_novel_stops_#date#.png
+
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of RNA-seq data for regions around start/stop codons of annotated/novel/isoform ORFs identified from Ribo-RET data
+******************************************************************************************************
+
+Filenames
+RTG_list.txt
+
+Description
+List of mock ORFs from plus strand, used as a control dataset.
+Tab-delimited .txt list of ORFs showing: Start codon coordinate, Stop codon coordinate, Strand
+******************************************************************************************************
+
+Filenames
+RTG_starts_#date#.png
+RTG_stops_#date#.png
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around start/stop codons of mock ORFs
+******************************************************************************************************
+
+Filenames
+leadered_annotated_starts_rep1_no_drug_vs_ret_#date#.png
+leadered_annotated_starts_rep2_no_drug_vs_ret_#date#.png
+
+Description
+Line plots showing normalized sequence read coverage in one replicate of Ribo-seq data and one replicate of Ribo-RET data for regions around start/stop codons of ORFs in the existing H37Rv annotation, only for ORFs where the start codon is >5 nt downstream of the nearest upstream transcription start site from Shell et al. (2015) or Cortes et al. (2013)
+******************************************************************************************************
+
+Filenames
+leadered_annotated_starts_ret_2reps_#date#.png
+leadered_annotated_stops_ret_2reps_#date#.png
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around start/stop codons of ORFs in the existing H37Rv annotation, only for ORFs where the start codon is >5 nt downstream of the nearest upstream transcription start site from Shell et al. (2015) or Cortes et al. (2013)
+******************************************************************************************************
+
+Filename
+codon_frequency_shared_peaks#date#.txt
+
+Description
+******************************************************************************************************
+
+Filename
+List_of_ERFs_#date#_#time#.txt
+
+Description
+Tab-delimited .txt showing the frequency of all trinucleotide sequences at positions from -50 to +8 relative to IERFs
+******************************************************************************************************
+
+Filename
+Run_summary_#date#_#time#.txt
+
+Description
+Summary of the program output
+Tab-delimited .txt listing: Number of IERFs, Number of ORFs identified from Ribo-RET data, Number of annotated ORFs identified from Ribo-RET data, Number isoform of ORFs identified from Ribo-RET data, Number of novel ORFs identified from Ribo-RET data, Number of randomly selected coordinates that match a potential start codon using the parameters specified in the program, Number of randomly selected coordinates tested, False discovery rate for overall ORF identification, False discovery rate for annotated ORF identification, False discovery rate for isoform ORF identification, False discovery rate for novel ORF identification, Statistical comparisons of delta G scores for minimum free energy RNA structure predictions for regions around start codons of annotated/novel/isoform ORFs, Statistical comparisons of Ribo-RET sequence read coverage values at start codons of annotated/novel/isoform ORFs
