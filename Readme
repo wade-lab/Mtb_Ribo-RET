@@ -108,6 +108,8 @@ Files list the following:
 Ribo-RET gff filenames used for analysis
 Threshold, span, window, and Min_fold values
 Tab-delimited lists of ORFs showing: Strand, Start Codon sequence, Start Codon to IERF Spacing, Start Coordinate position, Ribo-RET RPM coverage (rep1), Ribo-RET RPM coverage (rep2), Stop Codon sequence, Stop codon coordinate,	ORF Sequence, Protein Sequence
+For Annotated_ORFs_#data#.txt there are four additional columns: Ribo-seq rep1 coverage, Ribo-seq rep2 coverage, RNA-seq rep1 coverage, RNA-seq rep2 coverage
+For Novel_ORFs_#data#.txt there are six additional columns: Start position after removing regions of overlap with annotated genes, Stop position after removing regions of overlap with annotated genes, Ribo-seq rep1 coverage, Ribo-seq rep2 coverage, RNA-seq rep1 coverage, RNA-seq rep2 coverage
 ******************************************************************************************************
 
 Filenames
