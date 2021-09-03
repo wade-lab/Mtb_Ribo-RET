@@ -1,5 +1,7 @@
 
-8/11/21
+9/3/11
+
+***Ribo-RET ORF caller 9_3_21.py***
 
 This Python script takes data from two replicate Ribo-RET experiments and infers the position of ORFs. It also creates output files, including graphs for publication-ready figures. Required input files are listed below, with example files included (these files are available on GitHub). 
 
