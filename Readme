@@ -18,6 +18,7 @@ math
 random
 scipy
 
+The script also requires a local installation of the ViennaRNA Package that includes RNAfold.exe
 
 The user is prompted to provide file paths for input and output files, and filenames for input files. Output files are written to a folder with the date and time included in the folder name.
 
