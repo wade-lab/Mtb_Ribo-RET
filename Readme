@@ -510,7 +510,6 @@ Description
 
 
 
-
 ***Script #6***
 ***make gff for read ends from two SAMs 9_13_21.py***
 
@@ -543,18 +542,83 @@ Provided by user
 
 Description
 .gff file with sequence read coverage at each genome position with non-zero coverage
-Column 0: 'NA' [this column is not used]
-Column 1: 'NA1' [this column is not used]
-Column 2: 'NA2' [this column is not used]
+Column 0: 'NA'
+Column 1: 'NA1'
+Column 2: 'NA2'
 Column 3: Genome coordinate
 Column 4: Genome coordinate
 Column 5: Coverage. Negative values indicate coverage on the minus strand of the genome
-Column 6: '.' [this column is not used]
-Column 7: '.' [this column is not used]
-Column 8: '.' [this column is not used]
+Column 6: '.'
+Column 7: '.'
+Column 8: '.'
 
 
 
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+
+
+
+
+***Script #7***
+***mask and normalize gff 9_13_21.py***
+
+This Python script takes two a .gff file, removes coverage at positions specified in a "mask" file, and normalizes the remaining values as RPM.
+
+The script runs in Python v3
+
+The user is prompted to provide file paths for input and output .gff files, and the mask .txt file
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+Required input files
+
+1. .gff file, expected format:
+Column 0: Can be anything
+Column 1: Can be anything
+Column 2: Can be anything
+Column 3: Genome coordinate
+Column 4: Genome coordinate
+Column 5: Coverage. Negative values indicate coverage on the minus strand of the genome
+Column 6: '.'
+Column 7: '.'
+Column 8: '.'
+
+2. Tab-deliminted .txt file with strand/left coordinate/right coordinate for a set of regions to be masked in the .gff file
+Example file: regions_to_mask.txt
+
+
+------------------------------------------------------------------------------------------------------
+
+
+Output file:
+
+
+******************************************************************************************************
+Filename
+Provided by user
+
+Description
+.gff file with sequence read coverage at each genome position with non-zero coverage
+Column 0: Same as input .gff file
+Column 1: Same as input .gff file
+Column 2: 'NA3'
+Column 3: Genome coordinate
+Column 4: Genome coordinate
+Column 5: Coverage (RPM). Negative values indicate coverage on the minus strand of the genome
+Column 6: Same as input .gff file
+Column 7: Same as input .gff file
+Column 8: Same as input .gff file
+
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+
+
 
