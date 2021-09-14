@@ -1,7 +1,7 @@
 
 9/13/11
 
-There are 3 scripts, each of which comes with its own set of input files. Details of each script are given below. Where possible, input files are also provided. Note that some input files are too large to include.
+There are 5 scripts, each of which comes with its own set of input files. Details of each script are given below. Where possible, input files are also provided. Note that some input files are too large to include.
 
 
 ***Script #1***
@@ -426,6 +426,84 @@ Column 5: Ribo-seq rep1 coverage (only listed if the entire 50 nt transcript reg
 Column 6: Ribo-seq rep2 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
 Column 7: RNA-seq rep1 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
 Column 8: RNA-seq rep2 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
+
+
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 
+
+***Script #4***
+***fastq file trimming for polyadenylated samples 9_13_21.py***
+
+This Python script takes a .fastq file from a Ribo-seq experiment where the RNA was polyadenylated during library preparation. It trims the reads at the first instance of 'AAA' between positions 19 and 44 of the read. If there is no 'AAA' in that range, the read is discarded.
+
+The script runs in Python v3
+
+The user is prompted to provide file paths for input and output .fastq files.
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+Required input file
+
+1. .fastq file from a Ribo-seq experiment where the RNA was polyadenylated during library preparation
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+Output file:
+
+
+******************************************************************************************************
+Filename
+Provided by user
+
+Description
+.fastq file with trimmed reads, but the same IDs as the original .fastq
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+
+***Script #5***
+***fastq file trimming for ligated samples 9_13_21.py***
+
+This Python script takes a .fastq file from a Ribo-seq experiment where the RNA was ligated during library preparation. It trims the reads at the first instance of 'AAA' between positions 19 and 44 of the read. If there is no 'CTGTAGGCACC' in that range, the read is discarded.
+
+The script runs in Python v3
+
+The user is prompted to provide file paths for input and output .fastq files.
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+Required input file
+
+1. .fastq file from a Ribo-seq experiment where the RNA was ligated during library preparation
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+Output file:
+
+
+******************************************************************************************************
+Filename
+Provided by user
+
+Description
+.fastq file with trimmed reads, but the same IDs as the original .fastq
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
