@@ -1,6 +1,10 @@
 
-9/3/11
+9/13/11
 
+There are 2 scripts, each of which comes with its own set of input files. Details of each script are given below. Where possible, input files are also provided. Note that some input files are too large to include.
+
+
+***Script #1***
 ***Ribo-RET ORF caller 9_3_21.py***
 
 This Python script takes data from two replicate Ribo-RET experiments and infers the position of ORFs. It also creates output files, including graphs for publication-ready figures. Required input files are listed below, with example files included (these files are available on GitHub). 
@@ -211,3 +215,77 @@ Run_summary_#date#_#time#.txt
 Description
 Summary of the program output
 Tab-delimited .txt listing: Number of IERFs, Number of ORFs identified from Ribo-RET data, Number of annotated ORFs identified from Ribo-RET data, Number isoform of ORFs identified from Ribo-RET data, Number of novel ORFs identified from Ribo-RET data, Number of randomly selected coordinates that match a potential start codon using the parameters specified in the program, Number of randomly selected coordinates tested, False discovery rate for overall ORF identification, False discovery rate for annotated ORF identification, False discovery rate for isoform ORF identification, False discovery rate for novel ORF identification, Statistical comparisons of delta G scores for minimum free energy RNA structure predictions for regions around start codons of annotated/novel/isoform ORFs, Statistical comparisons of Ribo-RET sequence read coverage values at start codons of annotated/novel/isoform ORFs
+******************************************************************************************************
+
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+***Script #2***
+***GC skew analysis 9_13_21.py***
+
+This Python script takes a list of ORFs (strand, start/stop coordinates), excludes start and stop codons, determines regions that do not overlap with annotated genes, and for non-overlapping regions determines the G/C content at each codon position on a per-ORF basis, and for all ORFs combined, including a p-value (Fisher's exact test; can be one- or two-tailed).
+Required input files are listed below, with example files included (these files are available on GitHub). 
+
+The script runs in Python v3 and requires that the following modules are installed:
+matplotlib.pyplot
+datetime
+os
+sys
+scipy
+
+The user is prompted to provide file paths for input and output files, and filenames for input files. Output files are written to a folder with the date and time included in the folder name.
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of required input files, with names of example files
+
+1. .fna with one line of header and a single line of genome sequence (no gaps or line breaks)
+Example file: H37Rv.fna
+
+2. .gff listing all annotated genes, used to exclude overlapping regions. Must be at least 6 columns, with column 3 [counting starts at column 0] listing the left-end coordinate, column 4 listing the right-end coordinate, and column 6 listing the strand.
+Example file: H37Rv_annotated_ORFs.gff
+
+3. .txt listing all ORFs to be analyzed. Must be at least 3 columns, with column 0 listing the strand, column 1 listing the start coordinate, and column 2 listing the stop coordinate.
+Example file:novel_ORF_list.txt
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of output files (filenames contain date or time, shown here as #date# and #time#, respectively):
+
+
+******************************************************************************************************
+Filenames
+???.txt [named by the user]
+
+
+Description
+Tab-delimited .txt file with 10 columns:
+Column 0: Genome strand ('+' or '-')
+Column 1: Start codon coordinate
+Column 2: Stop codon coordinate
+Column 3: ORF sequence, with start/stop codons removed, excluding regions that overlap annotated genes
+Column 4: Overlap status. "Overlap" = partial or complete overlap with annotated genes. "No Overlap" = no overlap with annotated genes.
+Column 5: Number of G or C nucleotides at the first positions of codons in the region of the ORF analyzed
+Column 6: Number of G or C nucleotides at the second positions of codons in the region of the ORF analyzed
+Column 7: Number of G or C nucleotides at the third positions of codons in the region of the ORF analyzed
+Column 8: Total number of codons analyzed
+Column 9: Fisher's exact test p-value comparing the number of G/C nucleotides at second and third codon positions. Can be one- or two-tailed. For one-tailed, null hypothesis is that there are not more G/C nucleotides at the third position than at the second position of codons.
+******************************************************************************************************
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
+
