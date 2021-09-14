@@ -46,10 +46,10 @@ Example file: Ribo-seq rep1.gff
 Example file: Ribo-seq rep1.gff
 
 5. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
-Example file: Ribo-seq rep1.gff
+Example file: RNA-seq rep1.gff
 
 6. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
-Example file: Ribo-seq rep1.gff
+Example file: RNA-seq rep1.gff
 
 7. .fna with one line of header and a single line of genome sequence (no gaps or line breaks)
 Example file: H37Rv.fna
@@ -240,6 +240,7 @@ sys
 scipy
 
 The user is prompted to provide file paths for input and output files, and filenames for input files. Output files are written to a folder with the date and time included in the folder name.
+The user is also prompted to provide the type of Fisher's exact test to be applied (one-tailed or two-tailed).
 
 
 ------------------------------------------------------------------------------------------------------
@@ -288,4 +289,143 @@ Column 9: Fisher's exact test p-value comparing the number of G/C nucleotides at
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
 
+
+
+***Script #3***
+***Analysis of leaderless transcripts 9_13_21.py***
+
+This Python script takes a list of transcription start sites (TSSs; strand, genome coordinate) and determines whether there is potential start codon (ATG or GTG) within the first 5 nt of the transcript. It also creates output files, including graphs for publication-ready figures. Required input files are listed below, with example files included (these files are available on GitHub).
+
+The script runs in Python v3 and requires that the following modules are installed:
+matplotlib.pyplot
+pandas
+seaborn
+datetime
+os
+
+The user is prompted to provide file paths for input and output files, and filenames for input files. Output files are written to a folder with the date and time included in the folder name.
+The user is also required to input the maximum UTR length to be considered (up to 5 mt).
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of required input files, with names of example files
+
+1. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of Ribo-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+2. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of Ribo-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+3. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+4. .gff listing sequence read coverage genome-wide on both strands for replicate 1 of RNA-seq data. Must be at least 5 columns, with column 3 [counting starts at column 0] listing the genome coordinate and column 5 listing the RPM coverage. Negative values in column 5 indicate positions on the minus strand.
+Example file: Ribo-seq rep1.gff
+
+5. .gff listing all ORFs from the existing genome annotation. Must be at least 6 columns, with column 3 [counting starts at column 0] listing the left-end coordinate, column 4 listing the right-end coordinate, and column 6 listing the strand.
+Example file: H37Rv_annotated_ORFs.gff
+
+6. .txt listing transcription start sites. Column 0 = strand, column 1 = coordinate.
+Example file: all_TSSs_Mtb_Cortes_Shell.txt
+
+7. .fna with one line of header and a single line of genome sequence (no gaps or line breaks)
+Example file: H37Rv.fna
+
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+List of output files (filenames contain date or time, shown here as #date# and #time#, respectively):
+
+
+******************************************************************************************************
+Filename
+summary of TSSs_#date#_#time#.txt
+
+Description
+Tab-delimited .txt file listing all TSSs analyzed.
+Column 0: Strand
+Column 1: TSS coordinate
+Column 2: First 8 nt of transcript
+Column 3: UTR length (i.e. distance upstream of first ATG or GTG; up to 5 nt UTR)
+Column 4: Coordinate of first potential start codon (first ATG or GTG; up to 5 nt UTR, or no coordinate is listed)
+Column 5: Coordinate of corresponding stop codon
+Column 6: Nucleotide sequence of potential ORF
+Column 7: Corresponding amino acid sequence
+Column 8: ORF classification (Annotated = matches an existing annotated gene; Isoform = stop codon matches that of an existing annotated gene; Novel = no start/stop match to an existing annotated gene)
+
+******************************************************************************************************
+
+Filenames
+annotated_start_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+isoform_start_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+novel_start_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+annotated_stop_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+isoform_stop_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+novel_stop_codons_X_nt_leader_two_reps_metagene_plot_#date#.png
+
+Description
+Line plots showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around start/stop codons of predicted annotated/novel/isoform ORFs with a UTR length of "X" nt
+******************************************************************************************************
+
+Filename
+leadered_TSSs_two_reps_metagene_plot_9_13_2021_#date#.png
+
+Description
+Line plot showing normalized sequence read coverage in two replicates of Ribo-seq data for regions around TSSs that do not have an ATG or GTG up to up to 5 nt downstream
+******************************************************************************************************
+
+Filename
+leaderless_novel_TSS_list_for_coverage_scoring.txt
+
+Description
+Tab-delimited .txt listing only TSSs that are leaderless, with a 0 nt 5' UTR (i.e. transcript begins ATG or GTG)
+Column 0: Strand
+Column 1: Start codon coordinate
+Column 2: Stop codon coordinate
+Column 3: Coordinate of first ORF position that is at least 30 nt from an annotated gene on the same strand
+Column 4: Coordinate of last ORF position that is at least 30 nt from an annotated gene on the same strand
+Column 5: Ribo-seq rep1 coverage
+Column 6: Ribo-seq rep2 coverage
+Column 7: RNA-seq rep1 coverage
+Column 8: RNA-seq rep2 coverage
+******************************************************************************************************
+
+Filename
+leaderless_annotated_TSS_list_for_coverage_scoring.txt
+
+Description
+Tab-delimited .txt listing only TSSs for annotated genes that are leaderless, with a 0 nt 5' UTR (i.e. transcript begins ATG or GTG)
+Column 0: Strand
+Column 1: Start codon coordinate
+Column 2: Stop codon coordinate
+Column 3: Ribo-seq rep1 coverage
+Column 4: Ribo-seq rep2 coverage
+Column 5: RNA-seq rep1 coverage
+Column 6: RNA-seq rep2 coverage
+******************************************************************************************************
+
+Filename
+
+all_TSS_list_for_coverage_scoring.txt
+
+Description
+Tab-delimited .txt listing all TSSs with Ribo-seq and RNA-seq coverage for selected regions
+Column 0: Strand
+Column 1: TSS coordinate
+Column 2: TSS coordinate + 50 nt
+Column 3: TSS coordinate; not listed if the TSS is <30 nt from an annotated gene on the same strand
+Column 4: Coordinate of last position in the TSS --> TSS + 50 nt that is at least 30 nt from an annotated gene on the same strand
+Column 5: Ribo-seq rep1 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
+Column 6: Ribo-seq rep2 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
+Column 7: RNA-seq rep1 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
+Column 8: RNA-seq rep2 coverage (only listed if the entire 50 nt transcript region is at least 30 nt from an annotated gene on the same strand)
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 
