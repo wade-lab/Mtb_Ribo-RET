@@ -507,3 +507,54 @@ Description
 
 ------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------
+
+
+
+
+***Script #6***
+***make gff for read ends from two SAMs 9_13_21.py***
+
+This Python script takes two .sam files, one where reads were mapped to the plus strand and one where reads were mapped to a reverse-complemented (i.e. minus strand) genome sequence. The script generates a .gff with coverage values at every genome position on both strands, where coverage is only calculated for sequence read 3' ends, i.e. a single genome position per read.
+
+The script runs in Python v3
+
+The user is prompted to provide file paths for input (x2) and output .sam files.
+
+
+------------------------------------------------------------------------------------------------------
+
+
+
+Required input files
+
+1. .sam file from a Ribo-seq experiment .fastq that was mapped to the plus strand of the genome
+2. .sam file from a Ribo-seq experiment .fastq that was mapped to the minus strand of the genome
+
+
+------------------------------------------------------------------------------------------------------
+
+
+Output file:
+
+
+******************************************************************************************************
+Filename
+Provided by user
+
+Description
+.gff file with sequence read coverage at each genome position with non-zero coverage
+Column 0: 'NA' [this column is not used]
+Column 1: 'NA1' [this column is not used]
+Column 2: 'NA2' [this column is not used]
+Column 3: Genome coordinate
+Column 4: Genome coordinate
+Column 5: Coverage. Negative values indicate coverage on the minus strand of the genome
+Column 6: '.' [this column is not used]
+Column 7: '.' [this column is not used]
+Column 8: '.' [this column is not used]
+
+
+
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+
