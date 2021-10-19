@@ -474,7 +474,7 @@ Description
 ***Script #5***
 ***fastq file trimming for ligated samples 9_13_21.py***
 
-This Python script takes a .fastq file from a Ribo-seq experiment where the RNA was ligated during library preparation. It trims the reads at the first instance of 'AAA' between positions 19 and 44 of the read. If there is no 'CTGTAGGCACC' in that range, the read is discarded.
+This Python script takes a .fastq file from a Ribo-seq experiment where the RNA was ligated during library preparation. It trims the reads at the first instance of 'CTGTAGGCACC' between positions 19 and 44 of the read. If there is no 'CTGTAGGCACC' in that range, the read is discarded.
 
 The script runs in Python v3
 
