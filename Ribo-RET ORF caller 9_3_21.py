@@ -28,8 +28,6 @@ window = 10 #potential IERF cannot have a position with higher RPM coverage with
 #only these combinations are considered as potential start codons
 list_of_good =[['ATG',-14],['ATG',-15],['ATG',-16],['ATG',-17],['ATG',-18],['GTG',-14],['GTG',-15],['GTG',-16],['GTG',-17],['GTG',-18],['TTG',-15]]
 
-len_of_genome = 4411532 #length of the Mtb H37Rv genome
-
 
 ############################
 #//////////////////////////#
@@ -58,6 +56,7 @@ f = open(filepath_gffs + genome_fasta, 'r')
 qqq = f.readline() #skip the header line
 gen = 'x' + f.readline().split()[0].upper() #add an "x" at the beginning so the +1 genome position is position [1]
 f.close()
+len_of_genome = len(gen) - 1
 
 
 gene_gff = input("Enter the name of the gene gff file\n")
